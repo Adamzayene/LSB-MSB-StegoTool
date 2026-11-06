@@ -14,11 +14,12 @@ LSB & MSB StegoTool is a Python-based application that allows users to hide and 
 - Python 3.x
 - Pillow library (for image processing)
 - Colorama library (for colored terminal output)
+- NumPy
 
 You can install the required libraries using pip:
 
 ```bash
-pip install pillow colorama
+pip install -r requirements.txt
 ```
 ## Options
 
@@ -44,14 +45,14 @@ To use **LSB & MSB StegoTool**, you can execute it from the command line with th
 ### Hiding Text
 
 ```bash
-python stego_tool.py -i <image_path> -e "<text_to_hide>" -o <output_image_path> -m <method>
+python3 ./stego_tool.py -i <image_path> -e "<text_to_hide>" -o <output_image_path> -m <method>
 ```
 ### Extracting Text
 
 To extract hidden text from an image, you can execute the tool from the command line with the following options:
 
 ```bash
-python stego_tool.py -i <image_path> -x -m <method>
+python3 ./stego_tool.py -i <image_path> -x -m <method>
 ```
 ## Example
 
@@ -60,12 +61,12 @@ python stego_tool.py -i <image_path> -x -m <method>
 To hide text within an image, use the following command:
 
 ```bash
-python stego_tool.py -i input_image.png -e "Hello, World!" -o output_image.png -m lsb
+python3 ./stego_tool.py -i input_image.png -e "Hello, World!" -o output_image.png -m lsb
 ```
 ### Extracting Text
 
 To extract hidden text from an image, use the following command:
 
 ```bash
-python stego_tool.py -i output_image.png -x -m lsb
+python3 ./stego_tool.py -i output_image.png -x -m lsb
 ```
