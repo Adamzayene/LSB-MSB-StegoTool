@@ -1,0 +1,2 @@
+colorama==0.4.6
+pillow==13.0.0
