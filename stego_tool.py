@@ -65,25 +65,39 @@ def hide_text_in_image(image_path, text, output_path, method):
     image.save(output_path)
     print(Fore.GREEN + f"Image saved with hidden text in: {output_path}")
 
-def extract_text_from_image(image_path, method):
-    """Extract hidden text from an image using LSB or MSB method."""
-    image = Image.open(image_path).convert("RGB")
+def extract_text_from_image_impl(image, is_lsb_else_msb):
+    binary_text = []
     pixels = image.load()
-    binary_text = ""
-
+    run_of_ones = 0
     for y in range(image.height):
         for x in range(image.width):
             pixel = pixels[x, y]
             for i in range(3):  # Extract each color channel (R, G, B)
-                if method == "lsb":
-                    binary_text += str(pixel[i] & 1)  # Extract the least significant bit
-                elif method == "msb":
-                    binary_text += str((pixel[i] >> 7) & 1)  # Extract the most significant bit
+                if is_lsb_else_msb:
+                    bit = pixel[i] & 1  # Extract the least significant bit
+                else:
+                    bit = (pixel[i] >> 7) & 1 # Extract the most significant bit
+                binary_text.append(bit)
                 # Check for the end-of-text marker
-                if binary_text.endswith('1111111111111110'):
-                    return bin_to_text(binary_text[:-16])
+                if bit:
+                    run_of_ones += 1
+                elif run_of_ones >= 15:
+                    del binary_text[-16:]
+                    return binary_text
+                else:
+                    run_of_ones = 0
+    return binary_text
 
-    return bin_to_text(binary_text)
+def extract_text_from_image(image_path, method):
+    """Extract hidden text from an image using LSB or MSB method."""
+    image = Image.open(image_path).convert("RGB")
+    if method == "lsb":
+        is_lsb_else_msb = True
+    elif method == "msb":
+        is_lsb_else_msb = False
+    else:
+        raise AssertionError
+    return bin_to_text("".join(map(str, extract_text_from_image_impl(image, is_lsb_else_msb))))
 
 def main():
     print_banner()
