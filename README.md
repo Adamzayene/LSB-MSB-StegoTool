@@ -14,13 +14,12 @@ LSB & MSB StegoTool is a Python-based application that allows users to hide and 
 - Python 3.x
 - Pillow library (for image processing)
 - Colorama library (for colored terminal output)
+- NumPy
 
 You can install the required libraries using pip:
 
 ```bash
 pip install -r requirements.txt
-# or
-pip install pillow colorama
 ```
 ## Options
 
